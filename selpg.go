@@ -43,7 +43,7 @@ func process_args(ac int, psa *selpg_args) {
 	}
 
 	if psa.start_page < 1 || psa.start_page > math.MaxInt64-1 {
-		fmt.Fprintf(os.Stderr, "%s: invalid start page %s\n", progname, string(psa.start_page))
+		fmt.Fprintf(os.Stderr, "%s: invalid start page %d\n", progname, psa.start_page)
 		usage()
 		os.Exit(3)		
 	}
@@ -56,9 +56,15 @@ func process_args(ac int, psa *selpg_args) {
 
 	if ( psa.end_page < 1 || psa.end_page > math.MaxInt64-1) || 
 		(psa.end_page < psa.start_page) {
-		fmt.Fprintf(os.Stderr, "%s: invalid end page %s\n", progname, string(psa.end_page))
+		fmt.Fprintf(os.Stderr, "%s: invalid end page %d\n", progname, psa.end_page)
 		usage()
 		os.Exit(5)
+	}
+
+	if psa.page_len != 72 && psa.page_type != 'l' {
+		fmt.Fprintf(os.Stderr, "%s: -l and -f can not be used together\n", progname)
+		usage()
+		os.Exit(6)
 	}
 }
 
